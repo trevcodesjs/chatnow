@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>test</title>
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>
+<script>
+var socket = io.connect('http://localhost');
+var id;
+socket.on('msg', function (data){
+   $("#chatlog").append(data['id'] + ": " + data['msg'] + "<br/>");
+});
+socket.on('id', function (data){
+   id = data['id'];
+   $('#id').append(id);
+});
+function send_message(){
+   var m = $("#msg").val();
+   $("#chatlog").append(id + ": " + m + "<br/>");
+   socket.emit('msg', { msg : m, id: id });
+}
+</script>
+
+</head>
+<body>
+Your ID is:&nbsp;<span id='id'></span>
+<br/>
+<input id="msg" type="text"></input>
+<br/>
+<button onclick="send_message()">Send</button>
+<br/>
+<br/>
+<div id="chatlog"></div>
+</body>
+</html>
