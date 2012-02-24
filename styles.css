@@ -1,0 +1,30 @@
+#chatwrapper{
+   width:500px;
+}
+
+#chatlog{
+   width:100%;
+   height:300px;
+   resize:none;
+   margin-bottom:5px;
+}
+
+#msg{
+   width:80%;
+   height:30px;
+   float:left;
+}
+
+#submit{
+   height:30px;
+   width:20%;
+   float:left;
+}
+
+#id_container{
+   float:left;
+}
+
+#active_users_container{
+   float:right;
+}
