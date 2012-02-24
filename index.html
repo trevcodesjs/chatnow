@@ -1,35 +1,50 @@
 <html>
 <head>
-<title>test</title>
-
+<title>Chatnow</title>
+<link rel="stylesheet" type="text/css" href="styles.css" />
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>
 <script>
-var socket = io.connect('http://chatnow.nodester.com/');
-var id;
-socket.on('msg', function (data){
-   $("#chatlog").append(data['id'] + ": " + data['msg'] + "<br/>");
-});
-socket.on('id', function (data){
-   id = data['id'];
-   $('#id').append(id);
-});
-function send_message(){
-   var m = $("#msg").val();
-   $("#chatlog").append(id + ": " + m + "<br/>");
-   socket.emit('msg', { msg : m, id: id });
-}
+   var socket = io.connect('http://localhost');
+   var id;
+   socket.on('msg', function (data){
+      $("#chatlog").append(data['id'] + ": " + data['msg'] + "<br/>");
+   });
+   socket.on('welcome', function (data){
+      id = data['id'];
+      $('#id').html(id);
+      var active_users = data['num_users'];
+      $('#active_users').html(active_users);
+   });
+   socket.on('users_update', function (data){
+      var active_users = data['num_users'];
+      $('#active_users').html(active_users);
+   });
+   function send_message(){
+      var m = $("#msg").val();
+      var chatlog = $("#chatlog");
+      chatlog.append(id + ": " + m + "\n");
+      chatlog.scrollTop(chatlog[0].scrollHeight);
+      socket.emit('msg', { msg : m, id: id });
+   }
 </script>
-
 </head>
+
 <body>
-Your ID is:&nbsp;<span id='id'></span>
-<br/>
-<input id="msg" type="text"></input>
-<br/>
-<button onclick="send_message()">Send</button>
-<br/>
-<br/>
-<div id="chatlog"></div>
+<div id="chatwrapper">
+   <div id="id_container">
+      Your ID is:&nbsp;<span id='id'></span>
+   </div>
+   <div id="active_users_container">
+      Users connected:&nbsp;<span id='active_users'></span>
+   </div> 
+   <br/>
+   <textarea id="chatlog" readonly="readonly"></textarea>
+   <br/>
+   <input id="msg" type="text"></input>
+   <input id="submit" type="submit" value="Submit" onclick="send_message()"></input>
+   <br/>
+   <br/>
+</div>
 </body>
 </html>

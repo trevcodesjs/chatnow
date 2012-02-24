@@ -1,26 +1,37 @@
-var app = require('http').createServer(handler)
-  , io = require('socket.io').listen(app)
-  , fs = require('fs')
+var app = require('express').createServer()
+  , io = require('socket.io').listen(app);
+var active_users = 0;
+var all_time_users = 0;
 
-app.listen(14841);
+app.listen(9000);
 
-function handler (req, res) {
-   fs.readFile(__dirname + '/index.html',
-      function (err, data) {
-         if (err) {
-            res.writeHead(500);
-            return res.end('Error loading index.html');
-         }
-         res.writeHead(200);
-         res.end(data);
-      }
-   );
-}
+app.get('/', function (req, res) {
+  res.sendfile(__dirname + '/index.html');
+});
+
+app.get('/styles.css', function (req, res) {
+  res.sendfile(__dirname + '/styles.css');
+});
+
 
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
-   socket.emit('id', {id : socket.id});
+   active_users++;
+   all_time_users++;
+   
+   socket.broadcast.emit('users_update', {num_users : active_users});
+   
+   socket.emit('welcome', {id : "guest" + all_time_users, num_users : active_users});
+   
    socket.on('msg', function (data) {
       socket.broadcast.emit('msg', data);
-  });
+   });
+   
+   socket.on('disconnect', function (data) {
+      active_users--;
+      socket.broadcast.emit('users_update', {num_users : active_users});
+   });
 });
+
+
+
