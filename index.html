@@ -5,10 +5,11 @@
 <script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>
 <script>
-   var socket = io.connect('http://chatnow.nodester.com');
+   //var socket = io.connect('http://chatnow.nodester.com');
+   var socket = io.connect('http://localhost');
    var id;
    socket.on('msg', function (data){
-      $("#chatlog").append(data['id'] + ": " + data['msg'] + "<br/>");
+      $("#chatlog").append(data['id'] + ": " + data['msg'] + "\n");
    });
    socket.on('welcome', function (data){
       id = data['id'];
@@ -21,7 +22,8 @@
       $('#active_users').html(active_users);
    });
    function send_message(){
-      var m = $("#msg").val();
+      var m = $("<div>").text($("#msg").val()).html();
+      $("#msg").val("");
       var chatlog = $("#chatlog");
       chatlog.append(id + ": " + m + "\n");
       chatlog.scrollTop(chatlog[0].scrollHeight);
