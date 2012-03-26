@@ -14,7 +14,6 @@ app.get('/styles.css', function (req, res) {
 });
 
 
-io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
    active_users++;
    all_time_users++;

@@ -6,10 +6,12 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" ></script>
 <script>
    var socket = io.connect('http://chatnow.nodester.com');
-   //var socket = io.connect('http://localhost');
+   var socket = io.connect('http://localhost');
    var id;
    socket.on('msg', function (data){
-      $("#chatlog").append(data['id'] + ": " + data['msg'] + "\n");
+	   var chatlog = $("#chatlog");
+      chatlog.append(data['id'] + ": " + data['msg'] + "\n");
+      chatlog.scrollTop(chatlog[0].scrollHeight);
    });
    socket.on('welcome', function (data){
       id = data['id'];
@@ -29,6 +31,13 @@
       chatlog.scrollTop(chatlog[0].scrollHeight);
       socket.emit('msg', { msg : m, id: id });
    }
+   $('document').ready(function(){
+	   $("#msg").keypress(function(e){
+		   if(e.which == 13){
+				send_message();
+		   }
+	   });
+	});
 </script>
 </head>
 
