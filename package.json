@@ -1,0 +1,21 @@
+{
+  "name": "chatnow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^2.5.8",
+    "socket.io": "^0.9.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@nodester.com:/node/git/ha1ogen/6688-9483acfba4234db9f9e8454f891b9a82.git"
+  },
+  "author": "Trevor",
+  "license": "ISC"
+}
